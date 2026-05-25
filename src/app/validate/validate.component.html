@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="card p-3 mb-3">
+        <h1>Upload File</h1>
+        <label for="formFile" class="form-label">Select file to upload</label>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <input class="form-control" type="file" id="formFile" (change)="onFileSelected($event)">
+            </div>
+            <button class="col-2 btn btn-primary" (click)="onUpload()">Upload</button>
+        </div>
+    </div>
+
+    <!-- ✅ Editable error rows in table -->
+    <div *ngIf="errorRows.length > 0">
+        <h3>Validation Errors</h3>
+        <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>User ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Country</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let user of errorRows">
+          <!-- main data row -->
+          <tr *ngIf="user.isError" [class.table-danger]="user.isError">
+            <td><input type="number" [(ngModel)]="user.userId" name="userId{{user.userId}}" class="form-control"></td>
+            <td><input type="text" [(ngModel)]="user.firstName" name="firstName{{user.userId}}" class="form-control"></td>
+            <td><input type="text" [(ngModel)]="user.lastName" name="lastName{{user.userId}}" class="form-control"></td>
+            <td>
+              <select [(ngModel)]="user.gender" name="gender{{user.userId}}" class="form-select">
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+              </select>
+            </td>
+            <td><input type="number" [(ngModel)]="user.age" name="age{{user.userId}}" class="form-control"></td>
+            <td><input type="text" [(ngModel)]="user.country" name="country{{user.userId}}" class="form-control"></td>
+            <td><input type="text" [(ngModel)]="user.date" name="date{{user.userId}}" class="form-control"></td>
+          </tr>
+          <tr *ngIf="user.isError">
+            <td colspan="7" class="text-danger">
+              <strong>Error:</strong> {{user.errorMsg}}
+            </td>
+          </tr>
+        </ng-container>
+        <button type="button" class="btn btn-success mt-2" (click)="validateOrSaveCorrection(errorRows)">Save All Records</button>
+      </tbody>
+    </table>
+    </div>
+</div>
